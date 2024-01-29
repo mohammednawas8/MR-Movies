@@ -1,0 +1,12 @@
+.DS_Store
+
+#Ignore CocoaPods
+Pods/
+Podfile.lock
+
+#Ignore User specific files
+xcuserdata
+codesigndoc_exports/
+
+#DerivedData
+DerivedData/

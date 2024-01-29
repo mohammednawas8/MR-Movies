@@ -108,7 +108,6 @@
 				7075F7872B62973000E99E23 /* Networking */,
 				7075F7822B62967A00E99E23 /* Screens */,
 				7075F7972B62B63E00E99E23 /* Extensions */,
-				7075F79A2B62B72700E99E23 /* Util */,
 				7075F7802B62962E00E99E23 /* AppDelegate */,
 				7075F7812B62963E00E99E23 /* Resources */,
 			);
@@ -207,13 +206,6 @@
 				70CDC78D2B679A08004E305A /* FormattingExt.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		7075F79A2B62B72700E99E23 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Util;
 			sourceTree = "<group>";
 		};
 		7075F79B2B62BA0A00E99E23 /* Interceptors */ = {
