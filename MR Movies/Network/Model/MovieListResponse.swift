@@ -23,4 +23,4 @@ struct MovieListResponse: Decodable {
 
 struct MovieId: Decodable {
     let id: Int
-}
+} 

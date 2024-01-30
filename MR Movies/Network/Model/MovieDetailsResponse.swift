@@ -29,3 +29,12 @@ class GenereResponse: Decodable {
     let name: String
     let id: Int
 }
+
+extension MovieDetailsResponse {
+    func toMovieUiModel() -> MovieUiModel {
+        let genres = self.genres.map { $0.name }
+        let year = releaseDate.components(separatedBy: "-")[0]
+        let rating = Formatter.formatDoubleToOneDecimalString(rating)
+        return MovieUiModel(name: title, rating: rating, genres: genres, releaseYear: year, imagePath: "https://image.tmdb.org/t/p/w500\(imagePath)", duration: duration)
+    }
+}

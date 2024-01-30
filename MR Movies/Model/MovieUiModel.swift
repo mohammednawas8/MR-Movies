@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Movie {
+struct MovieUiModel {
     let name: String
     let rating: String
     let genres: [String]

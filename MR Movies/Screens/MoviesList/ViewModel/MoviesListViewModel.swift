@@ -7,61 +7,52 @@
 
 import Foundation
 
-protocol MoviesListViewModelDelegate: AnyObject {
-    
-    func didFetchMovies(movies: [Movie])
-    
-    func changeLoading(isLoading: Bool)
-    
-    func error(message: String)
-}
-
 class MoviesListViewModel {
+    
+    var onMoviesFetched: (([MovieUiModel]) -> Void)?
+    var onError: ((String) -> Void)?
+    
+    private var moviesService: MoviesService
+    
+    private (set) var fetchedMovies = [MovieUiModel]()
         
-    weak var delegate: MoviesListViewModelDelegate?
-    var moviesService: MoviesService
-    
-    private var page: Int = 1
-    private var totalPages = 1
-    private var fetchedMovies = [Movie]() {
-        didSet {
-            Task {
-                await MainActor.run {
-                    delegate?.didFetchMovies(movies:fetchedMovies)
-                }
-            }
-        }
-    }
-    private var isLoading = false {
-        didSet {
-            Task {
-                await MainActor.run {
-                    delegate?.changeLoading(isLoading:isLoading)
-                }
-            }
-        }
-    }
-    
-    init(delegate: MoviesListViewModelDelegate? = nil, moviesService: MoviesService = MoviesServiceImpl()) {
-        self.delegate = delegate
+    init(moviesService: MoviesService = MoviesServiceImpl()) {
         self.moviesService = moviesService
     }
     
-    //TODO: Create Paginator class
-    func fetchMovies() {
-        if page > totalPages {
-            return
-        }
+    lazy var moviesPaginator: Paginator<Int> = {
+        return Paginator<Int>(
+            initialPage: 1,
+            requestItems: { [weak self] page in
+                let response = try await self?.moviesService.fetchMovieList(page: page)
+                if response?.totalPages == page {
+                    return []
+                } else {
+                    return response?.movieIds.map{ $0.id } ?? []
+                }
+            },
+            onItemsFetched: { [weak self] ids in
+                self?.fetchMovieUiModels(ids: ids)
+            },
+            onError: { [weak self] error in
+                if let onError = self?.onError {
+                    onError(error.localizedDescription)
+                }
+            }
+        )
+    }()
+    
+    private func fetchMovieUiModels(ids: [Int]) {
         Task {
             do {
-                isLoading = true
-                let moviesResponse = try await moviesService.fetchMovieList(page: page)
-                totalPages = moviesResponse.totalPages
-                let moviesFromCurrentPage = try await withThrowingTaskGroup(of: Movie.self, returning: [Movie].self) { taskGroup in
-                    var movies = [Movie]()
-                    for movieId in moviesResponse.movieIds {
+                let movies = try await withThrowingTaskGroup(
+                    of: MovieUiModel.self,
+                    returning: [MovieUiModel].self
+                ){ taskGroup in
+                    var movies = [MovieUiModel]()
+                    for id in ids {
                         taskGroup.addTask {
-                            try await self.moviesService.fetchMovieDetails(movieId: movieId.id).toMovie()
+                            try await self.moviesService.fetchMovieDetails(movieId: id).toMovieUiModel()
                         }
                     }
                     for try await movie in taskGroup {
@@ -69,14 +60,14 @@ class MoviesListViewModel {
                     }
                     return movies
                 }
-                fetchedMovies = fetchedMovies + moviesFromCurrentPage
-                page += 1
-                isLoading = false
-            } catch {
-                await MainActor.run {
-                    delegate?.error(message: error.localizedDescription)
+                fetchedMovies = fetchedMovies + movies
+                if let onMoviesFetched {
+                    onMoviesFetched(fetchedMovies)
                 }
-                isLoading = false
+            } catch {
+                if let onError {
+                    onError(error.localizedDescription)
+                }
             }
         }
     }

@@ -16,7 +16,11 @@ class ApiKeyInterceptor: RequestInterceptor {
         defaultParamerters = ["api_key": apiKey]
     }
     
-    func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
+    func adapt(
+        _ urlRequest: URLRequest,
+        for session: Session,
+        completion: @escaping (Result<URLRequest, Error>) -> Void
+    ) {
         var urlRequest = urlRequest
         let encoding = URLEncodedFormParameterEncoder.default
         if let request = try? encoding.encode(defaultParamerters, into: urlRequest) {

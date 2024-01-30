@@ -7,8 +7,12 @@
 
 import Foundation
 
-struct StringResources {
-    static let Movies = "movies"
-    static let Error = "error"
-    static let Ok = "ok"
+enum StringResources: String {
+    case movies
+    case error
+    case ok
+    
+    var value: String {
+        return NSLocalizedString(self.rawValue, comment: "")
+    }
 }

@@ -10,6 +10,10 @@ import Kingfisher
 
 class MovieCell: UITableViewCell {
     
+    struct Constants {
+        static let NAME = "MovieCell"
+    }
+    
     @IBOutlet private var movieImageView: UIImageView!
     @IBOutlet private var nameLabel: UILabel!
     @IBOutlet private var ratingLabel: UILabel!
@@ -23,7 +27,8 @@ class MovieCell: UITableViewCell {
         selectionStyle = .none
     }
     
-    func configureCell(model: Movie) {
+    
+    func configureCell(model: MovieUiModel) {
         nameLabel.text = model.name
         ratingLabel.text = model.rating
         genreLabel.text = model.genres.joined(separator: ", ")
