@@ -11,7 +11,7 @@ class MoviesListViewController: UITableViewController {
     
     let viewModel = MoviesListViewModel()
         
-    private lazy var activityIndicatorView: UIActivityIndicatorView = {
+    private var activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView(style: .medium)
         activityIndicator.hidesWhenStopped = true
         return activityIndicator
