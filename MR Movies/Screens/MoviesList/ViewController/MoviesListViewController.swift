@@ -24,14 +24,12 @@ class MoviesListViewController: UITableViewController {
         configureNavigationBar()
         activityIndicatorView.startAnimating()
         viewModel.moviesPaginator.loadNextItems()
-        handleFetchingMoviesCallback()
-        handleErrorCallback()
+        bindViewModel()
     }
     
     
     func configureTableView() {
-        let nib = UINib(nibName: MovieCell.Constants.NAME, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: MovieCell.Constants.NAME)
+        tableView.register(MovieCell.nib, forCellReuseIdentifier: MovieCell.cellId)
     }
     
     func configureNavigationBar() {
@@ -39,16 +37,14 @@ class MoviesListViewController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
     }
     
-    func handleFetchingMoviesCallback() {
+    func bindViewModel() {
         viewModel.onMoviesFetched = { [weak self] movies in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
                 self?.activityIndicatorView.stopAnimating()
             }
         }
-    }
-    
-    func handleErrorCallback() {
+        
         viewModel.onError = { [weak self] error in
             DispatchQueue.main.async {
                 self?.presentAlertVC(title: StringResources.error.value, message: error)
@@ -71,7 +67,7 @@ extension MoviesListViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let movieCell = tableView.dequeueReusableCell(withIdentifier: MovieCell.Constants.NAME) as? MovieCell else { return UITableViewCell() }
+        guard let movieCell = tableView.dequeueReusableCell(withIdentifier: MovieCell.cellId) as? MovieCell else { return UITableViewCell() }
         let movie = viewModel.fetchedMovies[indexPath.row]
         movieCell.configureCell(model: movie)
         return movieCell

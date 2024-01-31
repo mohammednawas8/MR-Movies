@@ -18,11 +18,12 @@ class MoviesServiceImpl: MoviesService {
         session = Session(interceptor: apiKeyInterceptor)
     }
     
-    private struct Constants {
-        static let API_KEY = "e84676053a18b1eefde4c7d28bce5882" // TODO: Hide the API Key
+    struct Constants {
+        static let API_KEY = "e84676053a18b1eefde4c7d28bce5882"
         static let BASE_URL = "https://api.themoviedb.org/3/"
         static let MOVIE_LIST_END_POINT = BASE_URL + "discover/movie"
         static let MOVIE_DETAILS_END_POINT = BASE_URL + "movie/{movie_id}"
+        static let IMAGE_PREFIX = "https://image.tmdb.org/t/p/w500"
     }
     
     func fetchMovieList(page: Int) async throws -> MovieListResponse {

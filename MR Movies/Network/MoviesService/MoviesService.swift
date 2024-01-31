@@ -12,5 +12,6 @@ protocol MoviesService {
     func fetchMovieList(page: Int) async throws -> MovieListResponse
     
     func fetchMovieDetails(movieId: Int) async throws -> MovieDetailsResponse
+
 }
 

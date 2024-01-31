@@ -39,33 +39,23 @@ class Paginator <T> {
     }
     
     func loadNextItems() {
-        if endPaging {
-            return
-        }
+        guard endPaging == false else { return }
         Task {
-            changeLoadingStatus(isLoading: true)
+            onLoadingStatusChange?(true)
             do {
                 let items = try await requestItems(currentPage)
                 if items.isEmpty {
                     endPaging = true
-                    if let onPaginationEnd {
-                        onPaginationEnd()
-                    }
-                    return
+                    onPaginationEnd?()
+                } else {
+                    onItemsFetched(items)
+                    currentPage += 1
+                    onLoadingStatusChange?(false)
                 }
-                onItemsFetched(items)
-                currentPage += 1
-                changeLoadingStatus(isLoading: false)
             } catch {
                 onError(error)
-                changeLoadingStatus(isLoading: false)
+                onLoadingStatusChange?(false)
             }
-        }
-    }
-    
-    private func changeLoadingStatus(isLoading: Bool) {
-        if let onLoadingStatusChange {
-            onLoadingStatusChange(isLoading)
         }
     }
     

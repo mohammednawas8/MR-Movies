@@ -9,12 +9,12 @@ import Foundation
 
 class MoviesListViewModel {
     
-    var onMoviesFetched: (([MovieUiModel]) -> Void)?
+    var onMoviesFetched: (([MovieUIModel]) -> Void)?
     var onError: ((String) -> Void)?
     
     private var moviesService: MoviesService
     
-    private (set) var fetchedMovies = [MovieUiModel]()
+    private (set) var fetchedMovies = [MovieUIModel]()
         
     init(moviesService: MoviesService = MoviesServiceImpl()) {
         self.moviesService = moviesService
@@ -35,9 +35,7 @@ class MoviesListViewModel {
                 self?.fetchMovieUiModels(ids: ids)
             },
             onError: { [weak self] error in
-                if let onError = self?.onError {
-                    onError(error.localizedDescription)
-                }
+                self?.onError?(error.localizedDescription)
             }
         )
     }()
@@ -46,10 +44,10 @@ class MoviesListViewModel {
         Task {
             do {
                 let movies = try await withThrowingTaskGroup(
-                    of: MovieUiModel.self,
-                    returning: [MovieUiModel].self
+                    of: MovieUIModel.self,
+                    returning: [MovieUIModel].self
                 ){ taskGroup in
-                    var movies = [MovieUiModel]()
+                    var movies = [MovieUIModel]()
                     for id in ids {
                         taskGroup.addTask {
                             try await self.moviesService.fetchMovieDetails(movieId: id).toMovieUiModel()
@@ -61,13 +59,9 @@ class MoviesListViewModel {
                     return movies
                 }
                 fetchedMovies = fetchedMovies + movies
-                if let onMoviesFetched {
-                    onMoviesFetched(fetchedMovies)
-                }
+                onMoviesFetched?(fetchedMovies)
             } catch {
-                if let onError {
-                    onError(error.localizedDescription)
-                }
+                onError?(error.localizedDescription)
             }
         }
     }
