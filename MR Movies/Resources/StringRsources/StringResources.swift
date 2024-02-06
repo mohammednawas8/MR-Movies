@@ -11,6 +11,9 @@ enum StringResources: String {
     case movies
     case error
     case ok
+    case details
+    case aboutMovie
+    case minutes
     
     var value: String {
         return NSLocalizedString(self.rawValue, comment: "")

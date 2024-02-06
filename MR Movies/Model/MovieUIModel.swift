@@ -12,6 +12,8 @@ struct MovieUIModel {
     let rating: String
     let genres: [String]
     let releaseYear: String
-    let imagePath: String
+    let posterImagePath: String
+    let bannerImagePath: String
+    let overview: String
     let duration: Int
 }

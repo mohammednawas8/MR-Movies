@@ -10,4 +10,5 @@ import Foundation
 
 struct ColorResources {
     static let CharlestonGreen = "CharlestonGreen"
+    static let LightGray = "LightGray"
 }

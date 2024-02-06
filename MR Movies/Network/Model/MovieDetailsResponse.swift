@@ -14,6 +14,8 @@ struct MovieDetailsResponse: Decodable {
     let rating: Double
     let releaseDate: String
     let duration: Int
+    let overview: String
+    let bannerImagePath: String
     
     enum CodingKeys: String, CodingKey {
         case title = "original_title"
@@ -22,6 +24,8 @@ struct MovieDetailsResponse: Decodable {
         case rating = "vote_average"
         case releaseDate = "release_date"
         case duration = "runtime"
+        case overview
+        case bannerImagePath = "backdrop_path"
     }
 }
 
@@ -40,7 +44,9 @@ extension MovieDetailsResponse {
             rating: rating,
             genres: genres,
             releaseYear: year,
-            imagePath: MoviesServiceImpl.Constants.IMAGE_PREFIX + imagePath,
+            posterImagePath: MoviesServiceImpl.Constants.IMAGE_PREFIX + imagePath,
+            bannerImagePath: bannerImagePath,
+            overview: overview,
             duration: duration
         )
     }

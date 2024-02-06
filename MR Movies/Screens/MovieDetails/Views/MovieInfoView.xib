@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MovieInfoView" customModule="MR_Movies" customModuleProvider="target">
+            <connections>
+                <outlet property="imageView" destination="sHy-zn-DnW" id="8pv-UB-abD"/>
+                <outlet property="infoLabel" destination="lVd-Il-Hfm" id="OXD-Ve-b9O"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="117" height="53"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sHy-zn-DnW">
+                    <rect key="frame" x="0.0" y="0.0" width="16" height="19"/>
+                    <color key="tintColor" name="LightGray"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="16" id="8u1-DB-0Bw"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lVd-Il-Hfm">
+                    <rect key="frame" x="21" y="0.0" width="96" height="19"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                    <color key="textColor" name="LightGray"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" name="CharlestonGreen"/>
+            <constraints>
+                <constraint firstItem="sHy-zn-DnW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="BMa-RX-DMA"/>
+                <constraint firstItem="lVd-Il-Hfm" firstAttribute="leading" secondItem="sHy-zn-DnW" secondAttribute="trailing" constant="5" id="Gwq-CM-VVU"/>
+                <constraint firstItem="lVd-Il-Hfm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="TVK-4K-7tZ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="sHy-zn-DnW" secondAttribute="bottom" id="dRn-WM-ZAm"/>
+                <constraint firstItem="sHy-zn-DnW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="iV0-5J-CEK"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="lVd-Il-Hfm" secondAttribute="bottom" id="mGO-eU-kXP"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="lVd-Il-Hfm" secondAttribute="trailing" id="xgK-qO-dSR"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-206.87022900763358" y="328.52112676056339"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="CharlestonGreen">
+            <color red="0.14100000262260437" green="0.16200000047683716" blue="0.1940000057220459" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="LightGray">
+            <color red="0.57300001382827759" green="0.57300001382827759" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

@@ -29,7 +29,7 @@ class MovieCell: UITableViewCell {
         genreLabel.text = model.genres.joined(separator: ", ")
         yearLabel.text = model.releaseYear
         durationLabel.text = String(model.duration)
-        let url = URL(string: model.imagePath)
+        let url = URL(string: model.posterImagePath)
         movieImageView.kf.setImage(with: url)
     }
 }
