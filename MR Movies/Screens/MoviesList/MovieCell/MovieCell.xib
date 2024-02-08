@@ -26,7 +26,7 @@
                         </constraints>
                     </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="s1h-3I-Iu1">
-                        <rect key="frame" x="107" y="10" width="283" height="134"/>
+                        <rect key="frame" x="107" y="10" width="247" height="134"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LhT-j2-pM1">
                                 <rect key="frame" x="0.0" y="0.0" width="42.666666666666664" height="38"/>
@@ -112,32 +112,59 @@
                             </stackView>
                         </subviews>
                     </stackView>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="xjj-o1-Nil">
+                        <rect key="frame" x="354" y="0.0" width="38" height="154"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="o9f-IS-800">
+                                <rect key="frame" x="0.0" y="69.333333333333329" width="16" height="15.666666666666671"/>
+                                <color key="tintColor" red="0.98233133549999996" green="0.53059262039999999" blue="0.01040801033" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="16" id="sD3-FB-Oaw"/>
+                                    <constraint firstAttribute="height" constant="16" id="scr-Zh-XMF"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.forward" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="jUE-V9-hSy">
+                                <rect key="frame" x="22" y="71" width="16" height="12.333333333333329"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="Grq-gr-9bg"/>
+                                    <constraint firstAttribute="width" constant="16" id="eqK-Iw-CRV"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                    </stackView>
                 </subviews>
-                <color key="backgroundColor" name="CharlestonGreen"/>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="xjj-o1-Nil" secondAttribute="bottom" id="6sC-3S-Hgd"/>
                     <constraint firstItem="s1h-3I-Iu1" firstAttribute="leading" secondItem="tEg-P5-5qv" secondAttribute="trailing" constant="12" id="71a-OL-APd"/>
+                    <constraint firstItem="xjj-o1-Nil" firstAttribute="leading" secondItem="s1h-3I-Iu1" secondAttribute="trailing" id="Awr-7g-ZWc"/>
                     <constraint firstAttribute="bottom" secondItem="s1h-3I-Iu1" secondAttribute="bottom" constant="10" id="Bec-Ic-QVJ"/>
+                    <constraint firstItem="xjj-o1-Nil" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="ExJ-Ou-pjk"/>
                     <constraint firstItem="tEg-P5-5qv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="XAp-q8-2Og"/>
                     <constraint firstItem="s1h-3I-Iu1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="Zzh-L5-zJE"/>
-                    <constraint firstAttribute="trailing" secondItem="s1h-3I-Iu1" secondAttribute="trailing" constant="12" id="blA-C3-ycq"/>
                     <constraint firstItem="tEg-P5-5qv" firstAttribute="bottom" secondItem="s1h-3I-Iu1" secondAttribute="bottom" id="jF5-hJ-ldE"/>
                     <constraint firstItem="tEg-P5-5qv" firstAttribute="top" secondItem="s1h-3I-Iu1" secondAttribute="top" id="lrO-dc-apJ"/>
+                    <constraint firstAttribute="trailing" secondItem="xjj-o1-Nil" secondAttribute="trailing" constant="10" id="xVV-BM-Zun"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" name="CharlestonGreen"/>
             <connections>
                 <outlet property="durationLabel" destination="j0d-5K-6kw" id="1zW-8E-90e"/>
                 <outlet property="genreLabel" destination="2TL-e0-bY8" id="UtJ-dC-j5h"/>
                 <outlet property="movieImageView" destination="tEg-P5-5qv" id="d2T-1L-kCf"/>
                 <outlet property="nameLabel" destination="LhT-j2-pM1" id="ck6-8F-daX"/>
                 <outlet property="ratingLabel" destination="pJ7-a9-Lbo" id="Ruc-Pc-euO"/>
+                <outlet property="starImageView" destination="o9f-IS-800" id="xrQ-o9-i3Q"/>
                 <outlet property="yearLabel" destination="oYs-Oe-hMB" id="eHe-7t-BKK"/>
             </connections>
             <point key="canvasLocation" x="-44.274809160305338" y="29.577464788732396"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="bookmark.fill" catalog="system" width="110" height="128"/>
         <image name="calendar" catalog="system" width="128" height="107"/>
+        <image name="chevron.forward" catalog="system" width="97" height="128"/>
         <image name="clock" catalog="system" width="128" height="123"/>
         <image name="star" catalog="system" width="128" height="116"/>
         <image name="ticket" catalog="system" width="128" height="86"/>

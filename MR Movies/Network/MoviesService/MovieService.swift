@@ -7,7 +7,7 @@
 
 import Foundation
   
-protocol MoviesService {
+protocol MovieService {
     
     func fetchMovieList(page: Int) async throws -> MovieListResponse
     

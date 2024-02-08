@@ -8,12 +8,14 @@
 import Foundation
 import Alamofire
 
-class MoviesServiceImpl: MoviesService {
+class MovieServiceImpl: MovieService {
+    
+    static let shared: MovieService = MovieServiceImpl()
     
     private let apiKeyInterceptor: ApiKeyInterceptor
     private let session: Session
         
-    init() {
+    private init() {
         apiKeyInterceptor = ApiKeyInterceptor(apiKey: Constants.API_KEY)
         session = Session(interceptor: apiKeyInterceptor)
     }

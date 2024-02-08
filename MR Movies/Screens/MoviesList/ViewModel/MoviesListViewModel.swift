@@ -12,27 +12,39 @@ class MoviesListViewModel {
     var onMoviesFetched: (([MovieUIModel]) -> Void)?
     var onError: ((String) -> Void)?
     
-    private var moviesService: MoviesService
+    private var movieRepository: MovieRepository
     
-    private (set) var fetchedMovies = [MovieUIModel]()
+    private (set) var movies = [MovieUIModel]()
+    private var remoteMovies = [MovieUIModel]()
+    
+    var isFavoriteMovies: Bool = false {
+        didSet {
+            if isFavoriteMovies {
+                movies = movieRepository.fetchLocalMovies()
+            } else {
+                movies = remoteMovies
+            }
+        }
+    }
         
-    init(moviesService: MoviesService = MoviesServiceImpl()) {
-        self.moviesService = moviesService
+    init(movieRepository: MovieRepository = MovieRepositoryImpl.createInstance()) {
+        self.movieRepository = movieRepository
     }
     
-    lazy var moviesPaginator: Paginator<Int> = {
-        return Paginator<Int>(
+    lazy var moviesPaginator: Paginator<MovieUIModel> = {
+        return Paginator<MovieUIModel>(
             initialPage: 1,
             requestItems: { [weak self] page in
-                let response = try await self?.moviesService.fetchMovieList(page: page)
-                if response?.totalPages == page {
-                    return []
-                } else {
-                    return response?.movieIds.map{ $0.id } ?? []
-                }
+                guard let self = self else { return [] }
+                return try await self.movieRepository.fetchRemoteMovies(page: page)
             },
-            onItemsFetched: { [weak self] ids in
-                self?.fetchMovieUiModels(ids: ids)
+            onItemsFetched: { [weak self] movies in
+                guard let self = self else { return }
+                self.remoteMovies = self.remoteMovies + movies
+                if !isFavoriteMovies {
+                    self.movies = self.remoteMovies
+                    onMoviesFetched?(remoteMovies)
+                }
             },
             onError: { [weak self] error in
                 self?.onError?(error.localizedDescription)
@@ -40,29 +52,19 @@ class MoviesListViewModel {
         )
     }()
     
-    private func fetchMovieUiModels(ids: [Int]) {
-        Task {
-            do {
-                let movies = try await withThrowingTaskGroup(
-                    of: MovieUIModel.self,
-                    returning: [MovieUIModel].self
-                ){ taskGroup in
-                    var movies = [MovieUIModel]()
-                    for id in ids {
-                        taskGroup.addTask {
-                            try await self.moviesService.fetchMovieDetails(movieId: id).toMovieUiModel()
-                        }
-                    }
-                    for try await movie in taskGroup {
-                        movies.append(movie)
-                    }
-                    return movies
-                }
-                fetchedMovies = fetchedMovies + movies
-                onMoviesFetched?(fetchedMovies)
-            } catch {
-                onError?(error.localizedDescription)
-            }
+    func addFavoriteMarkToMovie(_ movie: MovieUIModel) {
+        guard let indexInMoviesList = movies.firstIndex(where: { $0.id == movie.id }) else { return }
+        guard let indexInRemoteMoviesList = remoteMovies.firstIndex(where: { $0.id == movie.id }) else { return }
+        movies[indexInMoviesList].setIsSaved(true)
+        remoteMovies[indexInRemoteMoviesList].setIsSaved(true)
+    }
+    
+    func removeFavoriteMarkFromMovie(_ movie: MovieUIModel) {
+        guard let indexInMoviesList = movies.firstIndex(where: { $0.id == movie.id }) else { return }
+        guard let indexInRemoteMoviesList = remoteMovies.firstIndex(where: { $0.id == movie.id }) else { return }
+        if isFavoriteMovies {
+            movies.remove(at: indexInMoviesList)
         }
+        remoteMovies[indexInRemoteMoviesList].setIsSaved(false)
     }
 }

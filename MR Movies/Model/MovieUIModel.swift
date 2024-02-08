@@ -8,6 +8,7 @@
 import Foundation
 
 struct MovieUIModel {
+    let id: Int
     let name: String
     let rating: String
     let genres: [String]
@@ -16,4 +17,9 @@ struct MovieUIModel {
     let bannerImagePath: String
     let overview: String
     let duration: Int
+    var isSaved: Bool = false
+    
+    mutating func setIsSaved(_ isSaved: Bool) {
+        self.isSaved = isSaved
+    }
 }

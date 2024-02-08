@@ -16,6 +16,7 @@ class MovieCell: UITableViewCell {
     @IBOutlet private var genreLabel: UILabel!
     @IBOutlet private var yearLabel: UILabel!
     @IBOutlet private var durationLabel: UILabel!
+    @IBOutlet var starImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,6 +29,7 @@ class MovieCell: UITableViewCell {
         ratingLabel.text = model.rating
         genreLabel.text = model.genres.joined(separator: ", ")
         yearLabel.text = model.releaseYear
+        starImageView.isHidden = !model.isSaved
         durationLabel.text = String(model.duration)
         let url = URL(string: model.posterImagePath)
         movieImageView.kf.setImage(with: url)

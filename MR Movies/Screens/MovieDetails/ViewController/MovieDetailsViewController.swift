@@ -7,7 +7,20 @@
 
 import UIKit
 
+protocol MovieDetailsVCDelegate: AnyObject {
+    
+    func didAddMovieToFavorites(movie: MovieUIModel)
+    
+    func didRemoveMovieFromFavorites(movie: MovieUIModel)
+}
+
 class MovieDetailsViewController: UIViewController {
+    
+    struct Constants {
+        static let StoryboardID = "DetailsVC"
+    }
+    
+    weak var delegate: MovieDetailsVCDelegate?
     
     @IBOutlet var bannerImageView: UIImageView!
     @IBOutlet var posterImageView: UIImageView!
@@ -16,32 +29,43 @@ class MovieDetailsViewController: UIViewController {
     @IBOutlet var durationInfoView: MovieInfoView!
     @IBOutlet var genreInfoView: MovieInfoView!
     @IBOutlet var overviewLabel: UILabel!
+        
+    let viewModel = MovieDetailsViewModel()
     
-    
-    var movie: MovieUIModel = MovieUIModel(
-        name: "Spider Man far away from home",
-        rating: "8.2",
-        genres: ["action","advanture"],
-        releaseYear: "2019",
-        posterImagePath: "https://m.media-amazon.com/images/M/MV5BZWMyYzFjYTYtNTRjYi00OGExLWE2YzgtOGRmYjAxZTU3NzBiXkEyXkFqcGdeQXVyMzQ0MzA0NTM@._V1_FMjpg_UX1000_.jpg",
-        bannerImagePath: "https://thecosmiccircus.com/wp-content/uploads/2022/06/tobeyyyyy-e1654915118777.jpg",
-        overview: "Placeholder text that exemplifies the kind of content that should appear, helps reduce cognitive load. For instance, if a given entry field has a label next to it: The label element describes the kind of content that needs to appear.",
-        duration: 127)
+    private lazy var favoriteButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(favoriteTapped), for: .touchUpInside)
+        return button
+    }()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = StringResources.details.value
         configureViews()
+        configureNavigationBar()
     }
-
+    
     func configureViews() {
         configureImages()
         configureMovieInformationViews()
         configureLabels()
+        bindViewModel()
+    }
+    
+    func bindViewModel() {
+        viewModel.onMovieSaved = { [weak self] movie in
+            self?.configureFavoriteButton()
+            self?.delegate?.didAddMovieToFavorites(movie: movie)
+        }
+        
+        viewModel.onMovieDeleted = { [weak self] movie in
+            self?.configureFavoriteButton()
+            self?.delegate?.didRemoveMovieFromFavorites(movie: movie)
+        }
     }
     
     func configureImages() {
+        guard let movie = viewModel.movie else { return }
         let bannerImageUrl = URL(string: movie.bannerImagePath)
         bannerImageView.kf.setImage(with: bannerImageUrl)
         let posterImageUrl = URL(string: movie.posterImagePath)
@@ -49,13 +73,37 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func configureMovieInformationViews() {
+        guard let movie = viewModel.movie else { return }
         yearInfoView.infoLabel.text = String(movie.releaseYear)
         durationInfoView.infoLabel.text = String(movie.duration) + StringResources.minutes.value
         genreInfoView.infoLabel.text = movie.genres.joined(separator: ", ")
     }
     
     func configureLabels() {
+        guard let movie = viewModel.movie else { return }
         nameLabel.text = movie.name
         overviewLabel.text = movie.overview
+    }
+    
+    func configureNavigationBar() {
+        title = StringResources.details.value
+        configureFavoriteButton()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: favoriteButton)
+    }
+    
+    func configureFavoriteButton() {
+        guard let movie = viewModel.movie else { return }
+        favoriteButton.tintColor = movie.isSaved ? .systemOrange : .systemBlue
+        let image = UIImage(systemName: movie.isSaved ? "bookmark.fill" : "bookmark")
+        favoriteButton.setImage(image, for: .normal)
+    }
+    
+    @objc func favoriteTapped() {
+        guard let movie = viewModel.movie else { return }
+        if movie.isSaved {
+            viewModel.deleteMovie(movie)
+        } else {
+            viewModel.saveMovie(movie)
+        }
     }
 }

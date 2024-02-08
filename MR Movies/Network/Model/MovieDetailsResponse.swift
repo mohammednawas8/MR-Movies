@@ -8,6 +8,7 @@
 import Foundation
 
 struct MovieDetailsResponse: Decodable {
+    let id: Int
     let title: String
     let genres: [GenereResponse]
     let imagePath: String
@@ -18,6 +19,7 @@ struct MovieDetailsResponse: Decodable {
     let bannerImagePath: String
     
     enum CodingKeys: String, CodingKey {
+        case id
         case title = "original_title"
         case genres
         case imagePath = "poster_path"
@@ -40,12 +42,13 @@ extension MovieDetailsResponse {
         let year = releaseDate.components(separatedBy: "-")[0]
         let rating = Formatter.formatDoubleToOneDecimalString(rating)
         return MovieUIModel(
+            id: id,
             name: title,
             rating: rating,
             genres: genres,
             releaseYear: year,
-            posterImagePath: MoviesServiceImpl.Constants.IMAGE_PREFIX + imagePath,
-            bannerImagePath: bannerImagePath,
+            posterImagePath: MovieServiceImpl.Constants.IMAGE_PREFIX + imagePath,
+            bannerImagePath: MovieServiceImpl.Constants.IMAGE_PREFIX + bannerImagePath,
             overview: overview,
             duration: duration
         )
