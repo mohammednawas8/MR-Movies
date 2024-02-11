@@ -64,6 +64,8 @@ class MoviesListViewModel {
         guard let indexInRemoteMoviesList = remoteMovies.firstIndex(where: { $0.id == movie.id }) else { return }
         if isFavoriteMovies {
             movies.remove(at: indexInMoviesList)
+        } else {
+            movies[indexInMoviesList].setIsSaved(false)
         }
         remoteMovies[indexInRemoteMoviesList].setIsSaved(false)
     }

@@ -31,7 +31,9 @@ class MovieCell: UITableViewCell {
         yearLabel.text = model.releaseYear
         starImageView.isHidden = !model.isSaved
         durationLabel.text = String(model.duration)
+        
         let url = URL(string: model.posterImagePath)
+        movieImageView.kf.indicatorType = .activity
         movieImageView.kf.setImage(with: url)
     }
 }

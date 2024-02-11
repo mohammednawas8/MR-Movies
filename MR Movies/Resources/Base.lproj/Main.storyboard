@@ -125,7 +125,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6a0-kj-kep">
-                                <rect key="frame" x="0.0" y="59" width="430" height="293.66666666666669"/>
+                                <rect key="frame" x="0.0" y="59" width="476.33333333333331" height="293.66666666666669"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vbc-7M-y0B">
                                 <rect key="frame" x="29" y="292.66666666666669" width="100" height="130"/>
@@ -135,16 +135,16 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spiderman No Way Home" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LyP-NP-PWi">
-                                <rect key="frame" x="137" y="352.66666666666669" width="264" height="70"/>
+                                <rect key="frame" x="136.99999999999997" y="352.66666666666669" width="310.33333333333326" height="70"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="XQj-nr-y4r">
-                                <rect key="frame" x="35" y="442.66666666666669" width="360" height="16"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="XQj-nr-y4r">
+                                <rect key="frame" x="58.333333333333343" y="442.66666666666669" width="360" height="16"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" id="ciw-tl-HNL" customClass="MovieInfoView" customModule="MR_Movies" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="8" width="0.0" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="8" width="116.66666666666667" height="0.0"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <userDefinedRuntimeAttributes>
@@ -152,42 +152,16 @@
                                             <userDefinedRuntimeAttribute type="image" keyPath="image" value="calendar" catalog="system"/>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dBH-KJ-3kY" customClass="DividerView" customModule="MR_Movies" customModuleProvider="target">
-                                        <rect key="frame" x="5" y="0.0" width="1" height="16"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="1" id="N5o-qy-2Qa"/>
-                                            <constraint firstAttribute="height" constant="16" id="x3r-kM-zcT"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="color">
-                                                <color key="value" name="LightGray"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vf6-Ec-RJ7" customClass="MovieInfoView" customModule="MR_Movies" customModuleProvider="target">
-                                        <rect key="frame" x="11" y="0.0" width="50" height="16"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vf6-Ec-RJ7" customClass="MovieInfoView" customModule="MR_Movies" customModuleProvider="target">
+                                        <rect key="frame" x="121.66666666666666" y="0.0" width="116.66666666666666" height="16"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="label" value="148 Minutes"/>
                                             <userDefinedRuntimeAttribute type="image" keyPath="image" value="clock" catalog="system"/>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xn1-Ez-Eaz" customClass="DividerView" customModule="MR_Movies" customModuleProvider="target">
-                                        <rect key="frame" x="66" y="0.0" width="1" height="16"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="16" id="7wV-Pq-Lmr"/>
-                                            <constraint firstAttribute="width" constant="1" id="uYA-wI-bgF"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="color">
-                                                <color key="value" name="LightGray"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
-                                    <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hy2-WN-0kA" customClass="MovieInfoView" customModule="MR_Movies" customModuleProvider="target">
-                                        <rect key="frame" x="72" y="0.0" width="288" height="16"/>
+                                    <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Hy2-WN-0kA" customClass="MovieInfoView" customModule="MR_Movies" customModuleProvider="target">
+                                        <rect key="frame" x="243.33333333333329" y="0.0" width="116.66666666666666" height="16"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="label" value="Action"/>
@@ -195,19 +169,15 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="dBH-KJ-3kY" secondAttribute="bottom" id="bwe-PP-E7i"/>
-                                    <constraint firstItem="dBH-KJ-3kY" firstAttribute="top" secondItem="XQj-nr-y4r" secondAttribute="top" id="tCT-6J-rTU"/>
-                                </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Movie" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bga-Uv-dwM">
-                                <rect key="frame" x="29" y="478.66666666666669" width="372" height="25.333333333333314"/>
+                                <rect key="frame" x="29" y="478.66666666666669" width="418.33333333333331" height="25.333333333333314"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Movie's Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mzX-LK-cFe">
-                                <rect key="frame" x="29" y="512" width="381" height="18"/>
+                                <rect key="frame" x="29" y="512" width="427.33333333333331" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -277,9 +247,6 @@
         <image name="ticket" catalog="system" width="128" height="86"/>
         <namedColor name="CharlestonGreen">
             <color red="0.14100000262260437" green="0.16200000047683716" blue="0.1940000057220459" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="LightGray">
-            <color red="0.57300001382827759" green="0.57300001382827759" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
