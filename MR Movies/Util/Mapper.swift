@@ -9,7 +9,6 @@ import Foundation
 
 class Mapper {
     static func fromMovieDataToMovieUI(_ movie: MovieDataModel, isSaved: Bool) -> MovieUIModel {
-        let duration = movie.duration
         return MovieUIModel(
             id: Int(movie.id),
             name: movie.name ?? "",

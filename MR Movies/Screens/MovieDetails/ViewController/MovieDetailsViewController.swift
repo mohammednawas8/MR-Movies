@@ -34,7 +34,9 @@ class MovieDetailsViewController: UIViewController {
     
     private lazy var favoriteButton: UIButton = {
         let button = UIButton()
-        button.addTarget(self, action: #selector(favoriteTapped), for: .touchUpInside)
+        button.addAction( UIAction { [weak self] _ in
+            self?.favoriteButtonTapped()
+        }, for: .primaryActionTriggered)
         return button
     }()
     
@@ -46,59 +48,68 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func configureViews() {
-        configureImages()
-        configureMovieInformationViews()
-        configureLabels()
+        guard let movie = viewModel.movie else { return }
+        configureImages(
+            bannerImageUrl: movie.bannerImagePath,
+            posterImageUrl: movie.posterImagePath
+        )
+        
+        configureMovieInformationViews(
+            releaseYear: movie.releaseYear,
+            duration: movie.duration,
+            genres: movie.genres
+        )
+
+        configureLabels(
+            name: movie.name,
+            overview: movie.overview
+        )
+        
         bindViewModel()
     }
     
     func bindViewModel() {
         viewModel.onMovieSaved = { [weak self] movie in
-            self?.configureFavoriteButton()
+            self?.configureFavoriteButton(isSaved: true)
             self?.delegate?.didAddMovieToFavorites(movie: movie)
         }
         
         viewModel.onMovieDeleted = { [weak self] movie in
-            self?.configureFavoriteButton()
+            self?.configureFavoriteButton(isSaved: false)
             self?.delegate?.didRemoveMovieFromFavorites(movie: movie)
         }
     }
     
-    func configureImages() {
-        guard let movie = viewModel.movie else { return }
-        let bannerImageUrl = URL(string: movie.bannerImagePath)
-        bannerImageView.kf.setImage(with: bannerImageUrl)
-        let posterImageUrl = URL(string: movie.posterImagePath)
-        posterImageView.kf.setImage(with: posterImageUrl)
+    func configureImages(bannerImageUrl: String, posterImageUrl: String) {
+        bannerImageView.kf.setImage(with: URL(string: bannerImageUrl))
+        posterImageView.kf.setImage(with: URL(string: posterImageUrl))
     }
     
-    func configureMovieInformationViews() {
-        guard let movie = viewModel.movie else { return }
-        yearInfoView.infoLabel.text = String(movie.releaseYear)
-        durationInfoView.infoLabel.text = String(movie.duration) + StringResources.minutes.value
-        genreInfoView.infoLabel.text = movie.genres.joined(separator: ", ")
+    func configureMovieInformationViews(releaseYear: String, duration: Int, genres: [String]) {
+        yearInfoView.infoLabel.text = releaseYear
+        durationInfoView.infoLabel.text = String(duration) + StringResources.minutes.value
+        genreInfoView.infoLabel.text = genres.joined(separator: ", ")
     }
     
-    func configureLabels() {
-        guard let movie = viewModel.movie else { return }
-        nameLabel.text = movie.name
-        overviewLabel.text = movie.overview
+    func configureLabels(name: String, overview: String) {
+        nameLabel.text = name
+        overviewLabel.text = overview
     }
     
     func configureNavigationBar() {
+        guard let movie = viewModel.movie else { return }
         title = StringResources.details.value
-        configureFavoriteButton()
+        configureFavoriteButton(isSaved: movie.isSaved)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: favoriteButton)
     }
-    
-    func configureFavoriteButton() {
-        guard let movie = viewModel.movie else { return }
-        favoriteButton.tintColor = movie.isSaved ? .systemOrange : .systemBlue
-        let image = UIImage(systemName: movie.isSaved ? "bookmark.fill" : "bookmark")
+
+    func configureFavoriteButton(isSaved: Bool) {
+        favoriteButton.tintColor = isSaved ? .systemOrange : .systemBlue
+        let image = UIImage(systemName: isSaved ? "bookmark.fill" : "bookmark")
         favoriteButton.setImage(image, for: .normal)
     }
     
-    @objc func favoriteTapped() {
+    func favoriteButtonTapped() {
         guard let movie = viewModel.movie else { return }
         if movie.isSaved {
             viewModel.deleteMovie(movie)

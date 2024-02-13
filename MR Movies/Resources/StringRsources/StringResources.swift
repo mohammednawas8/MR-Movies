@@ -14,6 +14,7 @@ enum StringResources: String {
     case details
     case aboutMovie
     case minutes
+    case noMovies
     
     var value: String {
         return NSLocalizedString(self.rawValue, comment: "")

@@ -23,7 +23,7 @@ class MovieDetailsViewModel {
     func saveMovie(_ movie: MovieUIModel) {
         let saveResult = moviesRepository.saveMovie(movie: movie)
         if saveResult {
-            self.movie?.setIsSaved(true)
+            self.movie?.isSaved = true
             onMovieSaved?(movie)
         }
     }
@@ -31,7 +31,7 @@ class MovieDetailsViewModel {
     func deleteMovie(_ movie: MovieUIModel) {
         let deleteResult = moviesRepository.deleteMovie(movie: movie)
         if deleteResult {
-            self.movie?.setIsSaved(false)
+            self.movie?.isSaved = false
             onMovieDeleted?(movie)
         }
     }

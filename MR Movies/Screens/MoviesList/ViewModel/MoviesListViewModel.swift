@@ -10,11 +10,16 @@ import Foundation
 class MoviesListViewModel {
     
     var onMoviesFetched: (([MovieUIModel]) -> Void)?
+    var onEmptyMovies: ((Bool) -> Void)?
     var onError: ((String) -> Void)?
     
     private var movieRepository: MovieRepository
     
-    private (set) var movies = [MovieUIModel]()
+    private (set) var movies = [MovieUIModel]() {
+        didSet {
+            onEmptyMovies?(movies.isEmpty)
+        }
+    }
     private var remoteMovies = [MovieUIModel]()
     
     var isFavoriteMovies: Bool = false {
@@ -55,8 +60,8 @@ class MoviesListViewModel {
     func addFavoriteMarkToMovie(_ movie: MovieUIModel) {
         guard let indexInMoviesList = movies.firstIndex(where: { $0.id == movie.id }) else { return }
         guard let indexInRemoteMoviesList = remoteMovies.firstIndex(where: { $0.id == movie.id }) else { return }
-        movies[indexInMoviesList].setIsSaved(true)
-        remoteMovies[indexInRemoteMoviesList].setIsSaved(true)
+        movies[indexInMoviesList].isSaved = true
+        remoteMovies[indexInRemoteMoviesList].isSaved = true
     }
     
     func removeFavoriteMarkFromMovie(_ movie: MovieUIModel) {
@@ -65,8 +70,8 @@ class MoviesListViewModel {
         if isFavoriteMovies {
             movies.remove(at: indexInMoviesList)
         } else {
-            movies[indexInMoviesList].setIsSaved(false)
+            movies[indexInMoviesList].isSaved = false
         }
-        remoteMovies[indexInRemoteMoviesList].setIsSaved(false)
+        remoteMovies[indexInRemoteMoviesList].isSaved = false
     }
 }

@@ -18,8 +18,4 @@ struct MovieUIModel {
     let overview: String
     let duration: Int
     var isSaved: Bool = false
-    
-    mutating func setIsSaved(_ isSaved: Bool) {
-        self.isSaved = isSaved
-    }
 }

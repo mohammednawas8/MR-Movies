@@ -12,6 +12,8 @@ class MoviesListViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var switchView: UISwitch!
     
+    var emptyMoviesLabel = UILabel()
+    
     let viewModel = MoviesListViewModel()
         
     private var activityIndicatorView: UIActivityIndicatorView = {
@@ -25,6 +27,7 @@ class MoviesListViewController: UIViewController {
         
         configureTableView()
         configureNavigationBar()
+        configureEmptyMoviesLabel()
         activityIndicatorView.startAnimating()
         viewModel.moviesPaginator.loadNextItems()
         bindViewModel()
@@ -47,6 +50,22 @@ class MoviesListViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
     }
     
+    func configureEmptyMoviesLabel() {
+        emptyMoviesLabel.text = StringResources.noMovies.value
+        emptyMoviesLabel.font = .systemFont(ofSize: 22)
+        emptyMoviesLabel.isHidden = true
+        emptyMoviesLabel.textAlignment = .center
+        emptyMoviesLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(emptyMoviesLabel)
+        
+        NSLayoutConstraint.activate([
+            emptyMoviesLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            emptyMoviesLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            emptyMoviesLabel.topAnchor.constraint(equalTo: switchView.bottomAnchor),
+            emptyMoviesLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+    }
+    
     func bindViewModel() {
         viewModel.onMoviesFetched = { [weak self] movies in
             DispatchQueue.main.async {
@@ -60,6 +79,10 @@ class MoviesListViewController: UIViewController {
                 self?.presentAlertVC(title: StringResources.error.value, message: error)
                 self?.activityIndicatorView.stopAnimating()
             }
+        }
+        
+        viewModel.onEmptyMovies = { [weak self] isEmpty in
+            self?.emptyMoviesLabel.isHidden = !isEmpty
         }
     }
     

@@ -36,7 +36,6 @@ import UIKit
     func commonInit() {
         view = loadViewFromNib()
         view.frame = self.bounds
-        self.translatesAutoresizingMaskIntoConstraints = false
         addSubview(view)
     }
     
