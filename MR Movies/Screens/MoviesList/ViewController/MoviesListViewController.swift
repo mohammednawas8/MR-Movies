@@ -82,7 +82,9 @@ class MoviesListViewController: UIViewController {
         }
         
         viewModel.onEmptyMovies = { [weak self] isEmpty in
-            self?.emptyMoviesLabel.isHidden = !isEmpty
+            DispatchQueue.main.async {
+                self?.emptyMoviesLabel.isHidden = !isEmpty
+            }
         }
     }
     
