@@ -9,7 +9,6 @@ import UIKit
 
 @IBDesignable class MovieInfoView: UIView {
     
-    @IBOutlet var view: UIView!
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var infoLabel: UILabel!
     
@@ -34,7 +33,7 @@ import UIKit
     }
     
     func commonInit() {
-        view = loadViewFromNib()
+        let view = loadViewFromNib()
         view.frame = self.bounds
         addSubview(view)
     }

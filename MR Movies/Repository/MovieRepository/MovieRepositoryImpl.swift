@@ -33,7 +33,7 @@ class MovieRepositoryImpl: MovieRepository {
             }
             for try await movie in taskGroup {
                 var mutableMovie = movie
-                if fetchSavedMovieById(mutableMovie.id) != nil {
+                if fetchFavoriteMovieById(mutableMovie.id) != nil {
                     mutableMovie.isSaved = true
                 }
                 movies.append(mutableMovie)
@@ -42,20 +42,22 @@ class MovieRepositoryImpl: MovieRepository {
         }
     }
     
-    func fetchLocalMovies() -> [MovieUIModel] {
-        return movieDataManager.fetchMovies()
+    func fetchFavoriteMovies() -> [MovieUIModel] {
+        return movieDataManager
+            .fetchMovies()
+            .map { Mapper.fromMovieDataToMovieUI($0, isSaved: true) }
     }
     
-    func fetchSavedMovieById(_ id: Int) -> MovieUIModel? {
-        return movieDataManager.fetchMovieById(id)
+    func fetchFavoriteMovieById(_ id: Int) -> MovieUIModel? {
+        guard let movieDataModel = movieDataManager.fetchFavoriteMovieById(id) else { return nil }
+        return Mapper.fromMovieDataToMovieUI(movieDataModel, isSaved: true)
     }
     
-    func saveMovie(movie: MovieUIModel) -> Bool {
-        return movieDataManager.saveMovie(movie: movie)
+    func saveMovieToFavorites(movie: MovieUIModel) -> Bool {
+        return movieDataManager.saveMovieToFavorites(movie: movie)
     }
     
-    
-    func deleteMovie(movie: MovieUIModel) -> Bool {
-        return movieDataManager.deleteMovie(movie: movie)
+    func deleteMovieFromFavorites(movie: MovieUIModel) -> Bool {
+        return movieDataManager.deleteMovieFromFavorites(id: movie.id)
     }
 }

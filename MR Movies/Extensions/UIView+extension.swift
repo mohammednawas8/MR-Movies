@@ -17,5 +17,4 @@ extension UIView {
         return UINib(nibName: viewName, bundle: .main)
             .instantiate(withOwner: self).first as? UIView ?? UIView()
     }
-    
 }

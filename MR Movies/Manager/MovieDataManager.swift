@@ -25,12 +25,11 @@ class MovieDataManager {
         return container.viewContext
     }()
     
-    func fetchMovies() -> [MovieUIModel] {
+    func fetchMovies() -> [MovieDataModel] {
         do {
             let request = MovieDataModel.fetchRequest()
             let models = try context.fetch(request)
             return models
-                .map { Mapper.fromMovieDataToMovieUI($0, isSaved: true) }
                 .reversed()
         } catch {
             print("Cannot fetch movies \(error)")
@@ -38,19 +37,18 @@ class MovieDataManager {
         }
     }
     
-    func fetchMovieById(_ id: Int) -> MovieUIModel? {
+    func fetchFavoriteMovieById(_ id: Int) -> MovieDataModel? {
         let request = MovieDataModel.fetchRequest()
         request.predicate = NSPredicate(format: "id == %ld", id)
         do {
-            guard let movieData = try context.fetch(request).first else { return nil }
-            return Mapper.fromMovieDataToMovieUI(movieData, isSaved: true)
+            return try context.fetch(request).first
         } catch {
             print("Cannot fetch Movie by id \(error)")
             return nil
         }
     }
     
-    func saveMovie(movie: MovieUIModel) -> Bool {
+    func saveMovieToFavorites(movie: MovieUIModel) -> Bool {
         let movieData = MovieDataModel(context: context)
         movieData.id = Int64(movie.id)
         movieData.name = movie.name
@@ -64,9 +62,9 @@ class MovieDataManager {
         return saveContext()
     }
     
-    func deleteMovie(movie: MovieUIModel) -> Bool {
+    func deleteMovieFromFavorites(id: Int) -> Bool {
         let request = MovieDataModel.fetchRequest()
-        request.predicate = NSPredicate(format: "id == %ld", movie.id)
+        request.predicate = NSPredicate(format: "id == %ld", id)
         do {
             if let movieData = try context.fetch(request).first {
                 context.delete(movieData)

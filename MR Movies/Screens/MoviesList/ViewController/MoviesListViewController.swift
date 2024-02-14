@@ -11,8 +11,8 @@ class MoviesListViewController: UIViewController {
     
     @IBOutlet var tableView: UITableView!
     @IBOutlet var switchView: UISwitch!
-    
-    var emptyMoviesLabel = UILabel()
+        
+    var emptyMoviesView = EmptyContentView()
     
     let viewModel = MoviesListViewModel()
         
@@ -27,17 +27,16 @@ class MoviesListViewController: UIViewController {
         
         configureTableView()
         configureNavigationBar()
-        configureEmptyMoviesLabel()
+        configureEmptyView()
         activityIndicatorView.startAnimating()
         viewModel.moviesPaginator.loadNextItems()
         bindViewModel()
     }
     
     @IBAction func favoriteSwitchTapped(_ sender: UISwitch) {
-        viewModel.isFavoriteMovies = switchView.isOn
+        viewModel.isFavoriteMoviesMovie = switchView.isOn
         tableView.reloadData()
     }
-    
     
     func configureTableView() {
         tableView.delegate = self
@@ -50,19 +49,17 @@ class MoviesListViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
     }
     
-    func configureEmptyMoviesLabel() {
-        emptyMoviesLabel.text = StringResources.noMovies.value
-        emptyMoviesLabel.font = .systemFont(ofSize: 22)
-        emptyMoviesLabel.isHidden = true
-        emptyMoviesLabel.textAlignment = .center
-        emptyMoviesLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(emptyMoviesLabel)
+    func configureEmptyView() {
+        emptyMoviesView.label.text = StringResources.noMovies.value
+        emptyMoviesView.translatesAutoresizingMaskIntoConstraints = false
+        emptyMoviesView.isHidden = true
+        view.addSubview(emptyMoviesView)
         
         NSLayoutConstraint.activate([
-            emptyMoviesLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            emptyMoviesLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            emptyMoviesLabel.topAnchor.constraint(equalTo: switchView.bottomAnchor),
-            emptyMoviesLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            emptyMoviesView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            emptyMoviesView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            emptyMoviesView.topAnchor.constraint(equalTo: switchView.bottomAnchor),
+            emptyMoviesView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
     
@@ -80,12 +77,6 @@ class MoviesListViewController: UIViewController {
                 self?.activityIndicatorView.stopAnimating()
             }
         }
-        
-        viewModel.onEmptyMovies = { [weak self] isEmpty in
-            DispatchQueue.main.async {
-                self?.emptyMoviesLabel.isHidden = !isEmpty
-            }
-        }
     }
     
     func presentAlertVC(title: String, message: String) {
@@ -99,6 +90,7 @@ class MoviesListViewController: UIViewController {
 extension MoviesListViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        emptyMoviesView.isHidden = !viewModel.movies.isEmpty
         return viewModel.movies.count
     }
     
@@ -110,7 +102,7 @@ extension MoviesListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == viewModel.movies.count - 1 && !viewModel.isFavoriteMovies {
+        if indexPath.row == viewModel.movies.count - 1 && !viewModel.isFavoriteMoviesMovie {
             activityIndicatorView.startAnimating()
             viewModel.moviesPaginator.loadNextItems()
         }
@@ -129,13 +121,8 @@ extension MoviesListViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension MoviesListViewController: MovieDetailsVCDelegate {
     
-    func didAddMovieToFavorites(movie: MovieUIModel) {
-        viewModel.addFavoriteMarkToMovie(movie)
-        tableView.reloadData()
-    }
-    
-    func didRemoveMovieFromFavorites(movie: MovieUIModel) {
-        viewModel.removeFavoriteMarkFromMovie(movie)
+    func didChangeFavoriateMovieStatus(movie: MovieUIModel, isSavedToFavorites: Bool) {
+        viewModel.changeStarMark(movie: movie, isSavedToFavorites: isSavedToFavorites)
         tableView.reloadData()
     }
     

@@ -11,12 +11,12 @@ protocol MovieRepository {
     
     func fetchRemoteMovies(page: Int) async throws -> [MovieUIModel]
     
-    func fetchLocalMovies() -> [MovieUIModel]
+    func fetchFavoriteMovies() -> [MovieUIModel]
     
-    func fetchSavedMovieById(_ id: Int) -> MovieUIModel?
+    func fetchFavoriteMovieById(_ id: Int) -> MovieUIModel?
     
-    func saveMovie(movie: MovieUIModel) -> Bool
+    func saveMovieToFavorites(movie: MovieUIModel) -> Bool
     
-    func deleteMovie(movie: MovieUIModel) -> Bool
+    func deleteMovieFromFavorites(movie: MovieUIModel) -> Bool
     
 }

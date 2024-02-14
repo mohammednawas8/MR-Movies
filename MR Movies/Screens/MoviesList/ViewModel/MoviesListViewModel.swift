@@ -10,22 +10,18 @@ import Foundation
 class MoviesListViewModel {
     
     var onMoviesFetched: (([MovieUIModel]) -> Void)?
-    var onEmptyMovies: ((Bool) -> Void)?
     var onError: ((String) -> Void)?
     
     private var movieRepository: MovieRepository
     
-    private (set) var movies = [MovieUIModel]() {
-        didSet {
-            onEmptyMovies?(movies.isEmpty)
-        }
-    }
+    private (set) var movies = [MovieUIModel]()
+    
     private var remoteMovies = [MovieUIModel]()
     
-    var isFavoriteMovies: Bool = false {
+    var isFavoriteMoviesMovie: Bool = false {
         didSet {
-            if isFavoriteMovies {
-                movies = movieRepository.fetchLocalMovies()
+            if isFavoriteMoviesMovie {
+                movies = movieRepository.fetchFavoriteMovies()
             } else {
                 movies = remoteMovies
             }
@@ -46,7 +42,7 @@ class MoviesListViewModel {
             onItemsFetched: { [weak self] movies in
                 guard let self = self else { return }
                 self.remoteMovies = self.remoteMovies + movies
-                if !isFavoriteMovies {
+                if !isFavoriteMoviesMovie {
                     self.movies = self.remoteMovies
                     onMoviesFetched?(remoteMovies)
                 }
@@ -57,21 +53,20 @@ class MoviesListViewModel {
         )
     }()
     
-    func addFavoriteMarkToMovie(_ movie: MovieUIModel) {
+    func changeStarMark(movie: MovieUIModel, isSavedToFavorites: Bool) {
         guard let indexInMoviesList = movies.firstIndex(where: { $0.id == movie.id }) else { return }
         guard let indexInRemoteMoviesList = remoteMovies.firstIndex(where: { $0.id == movie.id }) else { return }
-        movies[indexInMoviesList].isSaved = true
-        remoteMovies[indexInRemoteMoviesList].isSaved = true
-    }
-    
-    func removeFavoriteMarkFromMovie(_ movie: MovieUIModel) {
-        guard let indexInMoviesList = movies.firstIndex(where: { $0.id == movie.id }) else { return }
-        guard let indexInRemoteMoviesList = remoteMovies.firstIndex(where: { $0.id == movie.id }) else { return }
-        if isFavoriteMovies {
-            movies.remove(at: indexInMoviesList)
+        
+        if isSavedToFavorites {
+            movies[indexInMoviesList].isSaved = true
+            remoteMovies[indexInRemoteMoviesList].isSaved = true
         } else {
-            movies[indexInMoviesList].isSaved = false
+            if isFavoriteMoviesMovie {
+                movies.remove(at: indexInMoviesList)
+            } else {
+                movies[indexInMoviesList].isSaved = false
+            }
+            remoteMovies[indexInRemoteMoviesList].isSaved = false
         }
-        remoteMovies[indexInRemoteMoviesList].isSaved = false
     }
 }

@@ -20,16 +20,16 @@ class MovieDetailsViewModel {
         self.moviesRepository = movieRepository
     }
     
-    func saveMovie(_ movie: MovieUIModel) {
-        let saveResult = moviesRepository.saveMovie(movie: movie)
+    func saveMovieToFavorites(_ movie: MovieUIModel) {
+        let saveResult = moviesRepository.saveMovieToFavorites(movie: movie)
         if saveResult {
             self.movie?.isSaved = true
             onMovieSaved?(movie)
         }
     }
     
-    func deleteMovie(_ movie: MovieUIModel) {
-        let deleteResult = moviesRepository.deleteMovie(movie: movie)
+    func deleteMovieFromFavorites(_ movie: MovieUIModel) {
+        let deleteResult = moviesRepository.deleteMovieFromFavorites(movie: movie)
         if deleteResult {
             self.movie?.isSaved = false
             onMovieDeleted?(movie)

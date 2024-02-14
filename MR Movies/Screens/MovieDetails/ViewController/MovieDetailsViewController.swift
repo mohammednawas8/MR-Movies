@@ -9,9 +9,7 @@ import UIKit
 
 protocol MovieDetailsVCDelegate: AnyObject {
     
-    func didAddMovieToFavorites(movie: MovieUIModel)
-    
-    func didRemoveMovieFromFavorites(movie: MovieUIModel)
+    func didChangeFavoriateMovieStatus(movie: MovieUIModel, isSavedToFavorites: Bool)
 }
 
 class MovieDetailsViewController: UIViewController {
@@ -71,12 +69,12 @@ class MovieDetailsViewController: UIViewController {
     func bindViewModel() {
         viewModel.onMovieSaved = { [weak self] movie in
             self?.configureFavoriteButton(isSaved: true)
-            self?.delegate?.didAddMovieToFavorites(movie: movie)
+            self?.delegate?.didChangeFavoriateMovieStatus(movie: movie, isSavedToFavorites: true)
         }
         
         viewModel.onMovieDeleted = { [weak self] movie in
             self?.configureFavoriteButton(isSaved: false)
-            self?.delegate?.didRemoveMovieFromFavorites(movie: movie)
+            self?.delegate?.didChangeFavoriateMovieStatus(movie: movie, isSavedToFavorites: false)
         }
     }
     
@@ -105,16 +103,17 @@ class MovieDetailsViewController: UIViewController {
 
     func configureFavoriteButton(isSaved: Bool) {
         favoriteButton.tintColor = isSaved ? .systemOrange : .systemBlue
-        let image = UIImage(systemName: isSaved ? "bookmark.fill" : "bookmark")
+        let systemName = isSaved ? "bookmark.fill" : "bookmark"
+        let image = UIImage(systemName: systemName)
         favoriteButton.setImage(image, for: .normal)
     }
     
     func favoriteButtonTapped() {
         guard let movie = viewModel.movie else { return }
         if movie.isSaved {
-            viewModel.deleteMovie(movie)
+            viewModel.deleteMovieFromFavorites(movie)
         } else {
-            viewModel.saveMovie(movie)
+            viewModel.saveMovieToFavorites(movie)
         }
     }
 }
